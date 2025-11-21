@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  # Kasoku Server (SQLite - simplest setup)
+  kasoku-server:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      - PORT=8080
+      - DB_DRIVER=sqlite
+      - DB_DSN=/data/kasoku.db
+      - JWT_SECRET=${JWT_SECRET:-change-me-in-production}
+      - STORAGE_TYPE=local
+      - STORAGE_PATH=/storage
+    volumes:
+      - ./data:/data
+      - ./storage:/storage
+    restart: unless-stopped
+
+  # Optional: Kasoku Server with PostgreSQL
+  # Uncomment the sections below to use PostgreSQL instead of SQLite
+
+  # postgres:
+  #   image: postgres:15-alpine
+  #   environment:
+  #     - POSTGRES_DB=kasoku
+  #     - POSTGRES_USER=kasoku
+  #     - POSTGRES_PASSWORD=kasoku_password
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data
+  #   restart: unless-stopped
+
+  # kasoku-server-postgres:
+  #   build: .
+  #   ports:
+  #     - "8080:8080"
+  #   environment:
+  #     - PORT=8080
+  #     - DB_DRIVER=postgres
+  #     - DB_DSN=host=postgres user=kasoku password=kasoku_password dbname=kasoku port=5432 sslmode=disable
+  #     - JWT_SECRET=${JWT_SECRET:-change-me-in-production}
+  #     - STORAGE_TYPE=local
+  #     - STORAGE_PATH=/storage
+  #   volumes:
+  #     - ./storage:/storage
+  #   depends_on:
+  #     - postgres
+  #   restart: unless-stopped
+
+volumes:
+  postgres_data:

@@ -1,0 +1,67 @@
+# Caddyfile for Kasoku
+# Caddy automatically provisions SSL certificates via Let's Encrypt
+
+{$DOMAIN:localhost} {
+	# Enable compression
+	encode gzip zstd
+
+	# API endpoints - proxy to kasoku-server
+	handle /auth/* {
+		reverse_proxy kasoku-server:8080
+	}
+
+	handle /cache/* {
+		reverse_proxy kasoku-server:8080
+	}
+
+	handle /analytics/* {
+		reverse_proxy kasoku-server:8080
+	}
+
+	handle /billing/* {
+		reverse_proxy kasoku-server:8080
+	}
+
+	handle /health {
+		reverse_proxy kasoku-server:8080
+	}
+
+	# Everything else goes to web dashboard
+	handle {
+		reverse_proxy kasoku-web:3000
+	}
+
+	# Security headers
+	header {
+		# Enable HSTS
+		Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+
+		# Prevent clickjacking
+		X-Frame-Options "SAMEORIGIN"
+
+		# Prevent MIME sniffing
+		X-Content-Type-Options "nosniff"
+
+		# XSS protection
+		X-XSS-Protection "1; mode=block"
+
+		# Referrer policy
+		Referrer-Policy "strict-origin-when-cross-origin"
+
+		# Remove server header
+		-Server
+	}
+
+	# Logging
+	log {
+		output file /data/access.log {
+			roll_size 100mb
+			roll_keep 10
+		}
+	}
+}
+
+# Admin API for health checks (port 2019)
+:2019 {
+	metrics
+}

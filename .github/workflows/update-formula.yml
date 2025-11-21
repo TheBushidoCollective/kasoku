@@ -1,0 +1,37 @@
+name: Update Homebrew Formula
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  update-formula:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Update formula SHA
+        run: |
+          # Download the release tarball
+          VERSION="${{ github.event.release.tag_name }}"
+          URL="https://github.com/thebushidocollective/brisk/archive/refs/tags/${VERSION}.tar.gz"
+
+          # Calculate SHA256
+          SHA256=$(curl -sL "$URL" | sha256sum | cut -d' ' -f1)
+
+          # Update formula files
+          sed -i "s/sha256 \".*\"/sha256 \"$SHA256\"/" Formula/kasoku.rb
+          sed -i "s/sha256 \".*\"/sha256 \"$SHA256\"/" HomebrewFormula/kasoku-server.rb
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          commit-message: "Update Homebrew formula for ${{ github.event.release.tag_name }}"
+          title: "Update Homebrew formula for ${{ github.event.release.tag_name }}"
+          body: |
+            Automated update of Homebrew formula for release ${{ github.event.release.tag_name }}
+
+            - Updated SHA256 checksums
+            - Formula now points to ${{ github.event.release.tag_name }}
+          branch: update-formula-${{ github.event.release.tag_name }}

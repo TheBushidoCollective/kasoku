@@ -1,0 +1,32 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: kasoku
+      POSTGRES_PASSWORD: kasoku
+      POSTGRES_DB: kasoku
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  kasoku-server:
+    build:
+      context: ../..
+      dockerfile: server/Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      DB_DRIVER: postgres
+      DB_DSN: postgres://kasoku:kasoku@postgres:5432/kasoku
+      STORAGE_TYPE: local
+      STORAGE_PATH: /storage
+    depends_on:
+      - postgres
+    volumes:
+      - ./storage:/storage
+
+volumes:
+  postgres_data:

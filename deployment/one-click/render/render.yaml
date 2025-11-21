@@ -1,0 +1,57 @@
+services:
+  # PostgreSQL Database
+  - type: pserv
+    name: kasoku-db
+    env: docker
+    plan: starter
+    region: oregon
+    databaseName: kasoku
+    databaseUser: kasoku
+    ipAllowList: []
+
+  # Kasoku Server
+  - type: web
+    name: kasoku-server
+    env: docker
+    plan: starter
+    region: oregon
+    dockerfilePath: ./server/Dockerfile
+    dockerContext: ./server
+    healthCheckPath: /health
+    envVars:
+      - key: PORT
+        value: 8080
+      - key: DB_DRIVER
+        value: postgres
+      - key: DB_DSN
+        fromDatabase:
+          name: kasoku-db
+          property: connectionString
+      - key: JWT_SECRET
+        generateValue: true
+        length: 64
+      - key: STORAGE_TYPE
+        value: local
+      - key: STORAGE_PATH
+        value: /data
+    disk:
+      name: kasoku-storage
+      mountPath: /data
+      sizeGB: 10
+
+  # Kasoku Web Dashboard
+  - type: web
+    name: kasoku-web
+    env: docker
+    plan: starter
+    region: oregon
+    dockerfilePath: ./web/Dockerfile
+    dockerContext: ./web
+    envVars:
+      - key: NEXT_PUBLIC_API_URL
+        fromService:
+          type: web
+          name: kasoku-server
+          envVarKey: RENDER_EXTERNAL_URL
+    buildCommand: npm install && npm run build
+    startCommand: npm start

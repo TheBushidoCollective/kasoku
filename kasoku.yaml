@@ -1,0 +1,89 @@
+version: "1"
+
+commands:
+  # Example: Go build command
+  go-build:
+    command: "go build -o bin/myapp ./cmd/myapp"
+    working_dir: "."
+    inputs:
+      files:
+        - "go.mod"
+        - "go.sum"
+      globs:
+        - "**/*.go"
+        - "!**/*_test.go"
+      environment:
+        - "GOOS"
+        - "GOARCH"
+        - "CGO_ENABLED"
+      commands:
+        - command: "go version"
+          shell: "bash"
+    outputs:
+      - path: "bin/myapp"
+        optional: false
+
+  # Example: Node.js build
+  npm-build:
+    command: "npm run build"
+    working_dir: "."
+    inputs:
+      files:
+        - "package.json"
+        - "package-lock.json"
+        - "tsconfig.json"
+      globs:
+        - "src/**/*"
+      environment:
+        - "NODE_ENV"
+    outputs:
+      - path: "dist"
+        optional: false
+      - path: "build"
+        optional: true
+
+  # Example: Docker build
+  docker-build:
+    command: "docker build -t myapp:latest ."
+    working_dir: "."
+    inputs:
+      files:
+        - "Dockerfile"
+        - "go.mod"
+        - "go.sum"
+      globs:
+        - "**/*.go"
+      commands:
+        - command: "docker version --format '{{.Server.Version}}'"
+          shell: "bash"
+    outputs:
+      - path: ".brisk/docker-image.tar"
+        optional: false
+
+  # Example: Test command with dependencies
+  go-test:
+    command: "go test ./..."
+    working_dir: "."
+    inputs:
+      files:
+        - "go.mod"
+        - "go.sum"
+      globs:
+        - "**/*.go"
+      dependencies:
+        - "go-build"
+    outputs:
+      - path: "coverage.out"
+        optional: true
+
+cache:
+  local:
+    enabled: true
+    path: "~/.brisk/cache"
+    max_size: "10GB"
+
+  remote:
+    enabled: false
+    endpoint: "cache.brisk.example.com:443"
+    secure: true
+    token: "${BRISK_TOKEN}"

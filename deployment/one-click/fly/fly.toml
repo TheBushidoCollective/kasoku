@@ -1,0 +1,37 @@
+# Fly.io configuration for Kasoku Server
+app = "kasoku-server"
+primary_region = "sjc"
+
+[build]
+  dockerfile = "server/Dockerfile"
+
+[env]
+  PORT = "8080"
+  DB_DRIVER = "postgres"
+  STORAGE_TYPE = "local"
+  STORAGE_PATH = "/data"
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 1
+  processes = ["app"]
+
+  [[http_service.checks]]
+    grace_period = "10s"
+    interval = "30s"
+    method = "GET"
+    timeout = "5s"
+    path = "/health"
+
+[mounts]
+  source = "kasoku_storage"
+  destination = "/data"
+  initial_size = "10gb"
+
+[[vm]]
+  cpu_kind = "shared"
+  cpus = 1
+  memory_mb = 512
