@@ -1,24 +1,13 @@
 {
-  "enabledPlugins": {
-    "buki-go@han": true,
-    "bushido@han": true,
-    "buki-eslint@han": true,
-    "buki-nextjs@han": true,
-    "buki-react@han": true,
-    "buki-typescript@han": true,
-    "do-api@han": false,
-    "do-backend@han": false,
-    "do-frontend@han": false,
-    "buki-docker-compose@han": true,
-    "buki-helm@han": true,
-    "buki-kubernetes@han": false
+  "enabledPlugins": {},
+  "validation": {
+    "kubernetes": false,
+    "helm": false,
+    "docker": false,
+    "eslint": false,
+    "typescript": false
   },
-  "extraKnownMarketplaces": {
-    "han": {
-      "source": {
-        "source": "github",
-        "repo": "thebushidocollective/han"
-      }
-    }
+  "hooks": {
+    "enabled": false
   }
 }
