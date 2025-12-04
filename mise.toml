@@ -1,2 +1,4 @@
 [tools]
+claude-code = "latest"
 go = "latest"
+node = "24"
