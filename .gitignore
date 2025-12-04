@@ -9,10 +9,39 @@ bin/
 # Test coverage
 *.out
 coverage.html
+coverage/
+.coverage
 
 # Go workspace
 go.work
 go.work.sum
+
+# Node.js dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Next.js build output
+.next/
+out/
+dist/
+build/
+
+# Package manager lock files (keep these commented if you want to track them)
+# package-lock.json
+# yarn.lock
+# pnpm-lock.yaml
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+*.env
 
 # IDE
 .idea/
@@ -20,14 +49,76 @@ go.work.sum
 *.swp
 *.swo
 *~
+.history/
+.fleet/
 
 # OS
 .DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
 Thumbs.db
+Desktop.ini
 
-# Brisk cache
+# Brisk/Kasoku cache
 .kasoku/
 kasoku
 
 # Generated files
 *.pb.go
+*.pb.ts
+*_pb.js
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Temporary files
+*.tmp
+*.temp
+tmp/
+temp/
+
+# Build artifacts
+*.test
+*.prof
+
+# Docker volumes & data
+data/
+volumes/
+
+# Deployment secrets
+secrets/
+*.pem
+*.key
+!deployment/**/*.yaml
+!deployment/**/*.yml
+
+# Cache directories
+.cache/
+.parcel-cache/
+.turbo/
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
+
+# Debug
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+
+# Vercel
+.vercel
+
+# Local development
+.local/
