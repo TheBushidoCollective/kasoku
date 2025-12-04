@@ -453,7 +453,15 @@ Contributions welcome! See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
 ## License
 
-MIT License - see [LICENSE](LICENSE) file for details.
+Elastic License v2 - see [LICENSE](LICENSE) file for details.
+
+Kasoku is source-available software that allows:
+- ✅ Self-hosting for personal or commercial use
+- ✅ Modification and redistribution
+- ✅ Use in production environments
+- ❌ Offering Kasoku as a competing hosted service
+
+The license protects our SaaS business while enabling you to run Kasoku anywhere you choose.
 
 ## Copyright
 
