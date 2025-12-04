@@ -1,0 +1,21 @@
+{
+  "extraKnownMarketplaces": {
+    "han": {
+      "source": {
+        "source": "github",
+        "repo": "thebushidocollective/han"
+      }
+    }
+  },
+  "enabledPlugins": {
+    "bushido@han": true,
+    "jutsu-typescript@han": true,
+    "jutsu-nextjs@han": true,
+    "jutsu-react@han": true,
+    "jutsu-eslint@han": true,
+    "jutsu-go@han": true,
+    "jutsu-docker-compose@han": true,
+    "do-frontend-development@han": true,
+    "hashi-github@han": true
+  }
+}
